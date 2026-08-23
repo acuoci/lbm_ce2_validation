@@ -10,12 +10,14 @@ The numerical calculations are deliberately small, transparent BGK collision-str
 
 `src/experiment_I_d2q9_shear.py` verifies the transverse-shear expansion
 
-\[
+$$
 \eta_K^{\mathrm{pop}}
 =
-A(\theta,\tau) k
-\left[1+B(\theta,\tau)k^2+O(k^4)\right]
-\]
+A(\theta,\tau)\,k
+\left[
+1+B(\theta,\tau)k^2+O(k^4)
+\right]
+$$
 
 using exact discrete shear-eigenmode initialization followed by the full nonlinear D2Q9 BGK collision-streaming algorithm. The production sweep uses a 256 x 256 periodic lattice, three propagation families ([10], [21], [11]), three relaxation times, and eight harmonics per family.
 
@@ -31,9 +33,9 @@ Main outputs are written under `reference_results/experiment_I/`.
 
 `src/experiment_II_3D_shear.py` compares the complete measured kinetic population vector with
 
-\[
+$$
 g_Q^{\mathrm{CE2}}=C_0\widehat L_Q\mathbf q_F
-\]
+$$
 
 for exact three-dimensional transverse shear eigenmodes. The production calculation uses D3Q19 and D3Q27 at tau=1, directions [100], [110], and [111], and N = 24, 32, 40, 48, 64, 80. Symmetry-distinct transverse polarizations are retained.
 
@@ -132,7 +134,6 @@ The current Section V uses:
 - D3Q19/D3Q27 relative population-vector error versus wavenumber;
 - Taylor-Green early-time population-vector error at N=48, tau=0.8, U0=0.02.
 
-Compact CSV data supporting numerical values quoted in the text should be committed under `reference_results/` in the tagged paper release.
 
 ## License
 
@@ -140,21 +141,3 @@ The software is released under the MIT License; see `LICENSE`. This is a permiss
 
 The license choice is independent of the publication license of the associated article and Supplementary Material.
 
-## Citation and archival release
-
-For a paper-associated release, the recommended workflow is:
-
-1. create a Git tag for the exact submitted/accepted code version (for example `v1.0.0`);
-2. archive that GitHub release in a DOI-minting repository such as Zenodo;
-3. add the DOI and repository URL to `CITATION.cff`;
-4. cite the archived release in the manuscript reference list and use its persistent DOI in the Data Availability Statement.
-
-`CITATION.cff` currently contains placeholders for the GitHub URL and DOI because those identifiers do not yet exist.
-
-## Supplementary Material
-
-If the Python source is also supplied to *Physics of Fluids* as Supplementary Material, the Supplementary archive and the tagged GitHub release should contain the same production scripts and scientific inputs. A GitHub/Zenodo release remains useful because it gives readers version history, machine-readable metadata, and a persistent software citation.
-
-## Reproducibility status
-
-The uploaded source code has been organized without altering the scientific algorithms in the three experiment modules. The production wrappers make the manuscript parameter choices explicit. Full numerical regeneration has not been performed as part of repository assembly, because the D3Q19/D3Q27 machine-readable `Lhat` CSV operators were not supplied with the uploaded files and the full 3-D sweeps are comparatively expensive.
