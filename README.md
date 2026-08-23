@@ -1,6 +1,6 @@
 # LBM CE2 population-observability: numerical validation
 
-This repository contains the Python code used for the numerical validation in Section V of the associated theoretical manuscript on kinetic population observability in lattice Boltzmann methods (LBM).
+This repository contains the Python code and reproducibility material associated with the manuscript **“Observability of Velocity Derivatives from Kinetic Populations in the Lattice Boltzmann Method”**, by Alberto Cuoci, submitted for publication to *Physics of Fluids*.
 
 The numerical calculations are deliberately small, transparent BGK collision-streaming implementations written in NumPy. They are intended to verify specific analytical predictions directly from time-evolved lattice populations, not to provide a general-purpose LBM solver.
 
