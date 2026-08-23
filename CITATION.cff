@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the associated Physics of Fluids article and the archived software release."
+title: "LBM CE2 Population-Observability Numerical Validation"
+type: software
+authors:
+  - family-names: Cuoci
+    given-names: Alberto
+year: 2026
+license: MIT
+repository-code: "REPLACE_WITH_GITHUB_REPOSITORY_URL"
+# After archiving a release (e.g. with Zenodo), add:
+# doi: "10.5281/zenodo.XXXXXXX"
+# version: "1.0.0"

@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+*.so
+.DS_Store
+.venv/
+venv/
+.env
+.pytest_cache/
+.mypy_cache/
+
+# Local/generated scratch outputs
+*_output/
+paper_production_output/
+
+# Keep reviewed paper-supporting outputs under reference_results/ and figures/.
