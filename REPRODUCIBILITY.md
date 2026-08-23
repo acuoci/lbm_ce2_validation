@@ -24,7 +24,7 @@ The production scripts are intentionally explicit rather than relying on CLI def
 ### Experiment I
 
 - grid: 256 x 256
-- tau: 0.9, 1.0, 1.1
+- $\tau$: 0.9, 1.0, 1.1
 - directions: [10], [21], [11]
 - harmonics: 1,...,8
 - perturbation amplitude: 1e-6
@@ -33,7 +33,7 @@ The production scripts are intentionally explicit rather than relying on CLI def
 ### Experiment II
 
 - lattices: D3Q19, D3Q27
-- tau: 1.0
+- $\tau$: 1.0
 - perturbation amplitude: 1e-6
 - directions: [100], [110], [111]
 - N: 24, 32, 40, 48, 64, 80
@@ -44,8 +44,8 @@ The production scripts are intentionally explicit rather than relying on CLI def
 
 - lattices: D3Q19, D3Q27
 - N: 48
-- tau: 0.8
-- U0: 0.005, 0.01, 0.02
+- $\tau$: 0.8
+- $U_0$: 0.005, 0.01, 0.02
 - equilibrium initialization
 - startup discard: first 10 steps
 - final nondimensional time: t* = 0.02
@@ -68,7 +68,3 @@ python scripts/reproduce_experiment_III.py
 ```
 
 The three production calculations are independent and may be run separately.
-
-## What should be archived with a paper release
-
-For a version corresponding to manuscript submission or acceptance, archive the exact Git commit and include the compact CSV tables and paper-facing figures supporting the reported numerical values. Tag the release (for example `v1.0.0`) and archive that release in a DOI-minting repository such as Zenodo. Record the DOI in `CITATION.cff` and in the manuscript Data Availability Statement/reference list.
