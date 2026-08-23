@@ -88,14 +88,10 @@ This experiment also requires the two `Lhat` operator CSV files.
 │   ├── Lhat_D3Q19.csv        # canonical operator used by Experiments II and III
 │   ├── Lhat_D3Q27.csv        # canonical operator used by Experiments II and III
 │   └── README.md
-├── docs/
-│   ├── experiment_I_D2Q9_exact_shear_mode.md
-│   ├── experiment_II_3D_shear_population_response.md
-│   └── experiment_III_production_protocol_refined.md
-├── reference_results/
-│   └── README.md
-└── figures/
-    └── README.md
+└── docs/
+    ├── experiment_I_D2Q9_exact_shear_mode.md
+    ├── experiment_II_3D_shear_population_response.md
+    └── experiment_III_production_protocol_refined.md
 ```
 
 ## Installation
