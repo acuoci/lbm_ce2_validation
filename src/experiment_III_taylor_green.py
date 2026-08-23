@@ -9,9 +9,6 @@ Probe whether the linear CE2 kinetic population operator
 continues to describe the leading kinetic population structure in a weakly
 nonlinear, multimode 3-D flow.
 
-The experiment is intentionally modest and is meant as a reviewer-response
-reserve calculation, not as part of the core manuscript validation.
-
 Dependencies
 ------------
 numpy
