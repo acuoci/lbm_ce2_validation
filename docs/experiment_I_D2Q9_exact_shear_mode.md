@@ -1,536 +1,385 @@
 # Numerical Experiment I — D2Q9 Exact Shear-Mode LBM
 
-## 1. Context and purpose
+## 1. Objective
 
-The theoretical analysis predicts that, for the transverse shear branch of the linearized D2Q9 BGK lattice Boltzmann scheme, the ratio between the kinetic and hydrodynamic non-equilibrium components behaves at small wavenumber as
+Experiment I verifies the finite-wavenumber transverse-shear relation predicted for the linearized D2Q9 BGK lattice Boltzmann scheme:
 
-\[
-\eta_K^{\mathrm{pop}}(k,\theta,\tau)
-=
-A(\theta,\tau)\,k
+$$
+\eta_K^{\mathrm{pop}}=
+A(\theta,\tau)k
 \left[
 1+B(\theta,\tau)k^2+O(k^4)
 \right].
-\]
+$$
 
 Here:
 
-- \(k=|\mathbf k|\) is the physical lattice wavenumber;
-- \(\theta\) is the propagation angle of \(\mathbf k\);
-- \(\tau\) is the BGK relaxation time;
-- \(A(\theta,\tau)\) is the leading CE2 transfer coefficient;
-- \(B(\theta,\tau)\) is the finite-wavenumber correction derived from the exact D2Q9 amplification matrix.
+- $k=|𝐤|$ is the lattice wavenumber;
+- $\theta$ is the propagation angle;
+- $\tau$ is the BGK relaxation time;
+- $A(\theta,\tau)$ is the leading CE2 transfer coefficient;
+- $B(\theta,\tau)$ is the finite-wavenumber correction obtained from the exact D2Q9 amplification matrix.
 
-The purpose of this experiment is to verify that the above relation is recovered from **actual time-evolved D2Q9 populations**, rather than only from symbolic perturbation theory.
+The purpose of the experiment is to recover these coefficients from **time-evolved D2Q9 populations**, rather than from the analytical amplification matrix alone.
 
-The experiment is intentionally minimal. It uses a single periodic transverse shear eigenmode, no forcing, no boundaries, no nonlinear flow physics, and a perturbation amplitude small enough to remain in the linear regime.
-
-The numerical test therefore addresses one precise question:
-
-\[
-\boxed{
-\text{Does the kinetic-to-stress ratio measured from the full LBM evolution converge to the analytical }A\text{ and }B\text{ coefficients?}
-}
-\]
+The calculation is deliberately minimal: a single periodic transverse shear eigenmode, no forcing, no boundaries, and a perturbation amplitude sufficiently small to remain in the linear regime.
 
 ---
 
-## 2. Governing discrete model
+## 2. D2Q9 BGK model
 
-Use the standard D2Q9 BGK lattice Boltzmann equation in lattice units,
+The lattice Boltzmann equation is
 
-\[
-f_i(\mathbf x+\mathbf c_i,t+1)
-=
-f_i(\mathbf x,t)
--
+$$
+f_i(𝐱+𝐜_i,t+1)=
+f_i(𝐱,t)-
 \frac{1}{\tau}
 \left[
-f_i(\mathbf x,t)-f_i^{eq}(\mathbf x,t)
+f_i(𝐱,t)-f_i^{eq}(𝐱,t)
 \right].
-\]
+$$
 
 The D2Q9 velocities are
 
-\[
-\mathbf c_0=(0,0),
-\]
+$$
+𝐜_0=(0,0),
+$$
 
-\[
-\mathbf c_{1-4}
-=
-(1,0),(0,1),(-1,0),(0,-1),
-\]
+$$
+𝐜_{1-4}=
+(1,0),\ (0,1),\ (-1,0),\ (0,-1),
+$$
 
-\[
-\mathbf c_{5-8}
-=
-(1,1),(-1,1),(-1,-1),(1,-1),
-\]
+$$
+𝐜_{5-8}=
+(1,1),\ (-1,1),\ (-1,-1),\ (1,-1).
+$$
 
-with weights
+The corresponding weights are
 
-\[
-w_0=\frac49,
+$$
+w_0=\frac{4}{9},
 \qquad
-w_{1-4}=\frac19,
+w_{1-4}=\frac{1}{9},
 \qquad
-w_{5-8}=\frac1{36},
-\]
+w_{5-8}=\frac{1}{36},
+$$
 
-and
+with
 
-\[
-c_s^2=\frac13.
-\]
+$$
+c_s^2=\frac{1}{3}.
+$$
 
-The equilibrium distribution is
+The quadratic isothermal equilibrium is
 
-\[
-f_i^{eq}
-=
+$$
+f_i^{eq}=
 w_i\rho
 \left[
 1+
-\frac{\mathbf c_i\cdot\mathbf u}{c_s^2}
-+
-\frac{(\mathbf c_i\cdot\mathbf u)^2}{2c_s^4}
--
-\frac{|\mathbf u|^2}{2c_s^2}
+\frac{𝐜_i\cdot𝐮}{c_s^2}+
+\frac{(𝐜_i\cdot𝐮)^2}{2c_s^4}-
+\frac{|𝐮|^2}{2c_s^2}
 \right].
-\]
-
-For the actual verification, the perturbation amplitude should be sufficiently small that the dynamics remain effectively linear.
+$$
 
 ---
 
 ## 3. Exact Fourier amplification matrix
 
-For a Fourier mode
+For a Fourier perturbation
 
-\[
-\delta f_i(\mathbf x,t)
-=
-\widehat f_i(t)e^{i\mathbf k\cdot\mathbf x},
-\]
+$$
+\delta f_i(𝐱,t)=
+\widehat f_i(t)e^{i𝐤\cdot𝐱},
+$$
 
-the linearized D2Q9 dynamics are governed by
+the linearized dynamics satisfy
 
-\[
-\widehat{\mathbf f}(t+1)
-=
-\mathsf A(\mathbf k;\tau)
-\widehat{\mathbf f}(t),
-\]
+$$
+\widehat{𝐟}(t+1)=
+\mathsf A(𝐤;\tau)\widehat{𝐟}(t),
+$$
 
 with
 
-\[
-\boxed{
-\mathsf A(\mathbf k;\tau)
-=
-\mathsf S(\mathbf k)\,
-\mathsf C(\tau).
-}
-\]
+$$
+\mathsf A(𝐤;\tau)=
+\mathsf S(𝐤)\mathsf C(\tau).
+$$
 
-The streaming matrix is diagonal,
+The streaming matrix is diagonal:
 
-\[
-\mathsf S_{ii}
-=
-e^{-i\mathbf k\cdot\mathbf c_i},
-\]
+$$
+\mathsf S_{ii}=
+e^{-i𝐤\cdot𝐜_i}.
+$$
 
-and the linearized BGK collision matrix is
+The BGK collision matrix is
 
-\[
-\mathsf C(\tau)
-=
-\left(1-\frac1\tau\right)I
+$$
+\mathsf C(\tau) =
+\left(1-\frac{1}{\tau}\right)I
 +
-\frac1\tau P_{eq},
-\]
+\frac{1}{\tau}P_{eq},
+$$
 
 where
 
-\[
-(P_{eq})_{ij}
-=
+$$
+(P_{eq})_{ij} =
 w_i
 \left[
 1+
-\frac{\mathbf c_i\cdot\mathbf c_j}{c_s^2}
+\frac{𝐜_i\cdot𝐜_j}{c_s^2}
 \right].
-\]
+$$
 
-The numerical implementation should construct this matrix directly for each \((\mathbf k,\tau)\).
+This matrix is constructed directly for every $(𝐤,\tau)$ pair.
 
 ---
 
-## 4. Identification of the transverse shear eigenmode
+## 4. Transverse shear eigenmode
 
-At \(k\rightarrow0\), the transverse hydrodynamic eigenvector tends to
+As $k\rightarrow0$, the transverse hydrodynamic eigenvector approaches
 
-\[
-[v_0]_i
-=
+$$
+[v_0]_i =
 w_i
-\frac{\mathbf c_i\cdot\mathbf e_\perp}{c_s^2},
-\]
+\frac{𝐜_i\cdot𝐞_\perp}{c_s^2},
+$$
 
-where
+with
 
-\[
-\mathbf e_\perp
-=
+$$
+𝐞_\perp =
 (-\sin\theta,\cos\theta),
-\]
+$$
 
 and
 
-\[
-\mathbf k
-=
+$$
+𝐤 =
 k(\cos\theta,\sin\theta).
-\]
+$$
 
-For finite \(k\), compute all nine eigenpairs of
+At finite $k$, all nine eigenpairs of $\mathsf A(𝐤;\tau)$ are computed.
 
-\[
-\mathsf A(\mathbf k;\tau).
-\]
+The transverse shear branch is selected from its hydrodynamic content. For each right eigenvector $v_j$, define the momentum perturbation
 
-The transverse shear eigenvector should be selected using its **hydrodynamic content**, rather than eigenvalue continuity alone.
+$$
+\delta𝐣_j =
+\sum_i 𝐜_i v_{j,i},
+$$
 
-A robust selection criterion is:
+and the normalized transverse score
 
-1. normalize each right eigenvector \(v_j\);
-2. compute its momentum perturbation
-
-\[
-\delta\mathbf j_j
-=
-\sum_i \mathbf c_i v_{j,i};
-\]
-
-3. compute the normalized transverse score
-
-\[
-S_j
-=
+$$
+S_j =
 \frac{
-|\delta\mathbf j_j\cdot\mathbf e_\perp|
+|\delta𝐣_j\cdot𝐞_\perp|
 }{
-\|\delta\mathbf j_j\|+\epsilon
-};
-\]
+\|\delta𝐣_j\|+\epsilon
+}.
+$$
 
-4. among eigenvectors with eigenvalues close to the hydrodynamic branch, select the one with the largest transverse score and negligible density perturbation.
+The selected mode must have:
 
-For sufficiently small \(k\), this branch is unambiguous.
+- large transverse score;
+- negligible density perturbation;
+- negligible longitudinal momentum;
+- an eigenvalue belonging to the hydrodynamic shear branch.
 
-The phase and scalar normalization of the eigenvector are arbitrary and do not affect the ratio \(\eta_K^{\mathrm{pop}}\).
+The arbitrary phase and scalar normalization of the eigenvector do not affect the population-norm ratio used below.
 
 ---
 
 ## 5. Lattice-compatible wavevectors
 
-Because the time-stepping experiment is performed on a periodic lattice of size \(N_x\times N_y\), use integer Fourier modes:
+On a periodic $N_x\times N_y$ lattice,
 
-\[
+$$
 k_x=\frac{2\pi m_x}{N_x},
 \qquad
-k_y=\frac{2\pi m_y}{N_y}.
-\]
+k_y=\frac{2\pi m_y}{N_y},
+$$
 
-Thus
+so that
 
-\[
-k
-=
-\sqrt{k_x^2+k_y^2},
-\qquad
-\theta
-=
-\operatorname{atan2}(k_y,k_x).
-\]
-
-No interpolation or phase reconstruction is then required.
-
-Recommended symmetry-distinct directions are:
-
-\[
-(m_x,m_y)=(m,0)
-\]
-
-for an axial direction,
-
-\[
-(m_x,m_y)=(2m,m)
-\]
-
-for
-
-\[
-\theta=\arctan(1/2),
-\]
+$$
+k=\sqrt{k_x^2+k_y^2},
+$$
 
 and
 
-\[
-(m_x,m_y)=(m,m)
-\]
+$$
+\theta=\mathrm{atan2}(k_y,k_x).
+$$
 
-for the diagonal direction,
+The production calculations use three lattice-compatible direction families:
 
-\[
-\theta=\frac{\pi}{4}.
-\]
+| Family | Integer mode | Propagation angle |
+|---|---|---|
+| $[10]$ | $(m,0)$ | $\theta=0$ |
+| $[21]$ | $(2m,m)$ | $\theta=\arctan(1/2)$ |
+| $[11]$ | $(m,m)$ | $\theta=\pi/4$ |
 
-By changing \(N\) and/or the integer multiplier \(m\), a sequence of small \(k\) values can be generated while preserving the same propagation angle.
+These directions provide three symmetry-distinct orientations while preserving exact periodicity.
 
 ---
 
 ## 6. Exact eigenmode initialization
 
-The principal verification should avoid kinetic startup transients.
+To eliminate kinetic startup transients, the simulation is initialized directly with the exact discrete shear eigenmode:
 
-Let \(v_s(\mathbf k,\tau)\) be the selected complex shear eigenvector of the exact amplification matrix.
-
-Initialize the real-space populations as
-
-\[
-\boxed{
-f_i(\mathbf x,0)
-=
+$$
+f_i(𝐱,0) =
 w_i\rho_0
 +
 \varepsilon
-\operatorname{Re}
+\mathrm{Re}
 \left[
-v_{s,i}
-e^{i\mathbf k\cdot\mathbf x}
+v_{s,i}e^{i𝐤\cdot𝐱}
 \right].
-}
-\]
+$$
 
-Recommended values are
+The production values are
 
-\[
+$$
 \rho_0=1,
 \qquad
-\varepsilon=10^{-6}
-\]
+\varepsilon=10^{-6}.
+$$
 
-for the principal linear test.
+In the linear regime, the initialized state evolves as a single discrete eigenmode:
 
-This initialization is preferable to setting
+$$
+\widehat{𝐟}(t) =
+\lambda_s^t\widehat{𝐟}(0).
+$$
 
-\[
-f_i=f_i^{eq}(\rho,\mathbf u),
-\]
-
-because equilibrium initialization contains no initial non-equilibrium component and produces transient adjustment before the exact shear eigenstructure is established.
-
-The exact eigenmode initialization should produce a single decaying discrete eigenmode:
-
-\[
-\widehat{\mathbf f}(t)
-=
-\lambda_s^t
-\widehat{\mathbf f}(0).
-\]
-
-Consequently, the normalized kinetic ratio should remain constant in time to round-off accuracy.
-
-This time invariance is itself a useful implementation check.
+Consequently, normalized population diagnostics should remain constant in time up to floating-point and finite-amplitude effects.
 
 ---
 
-## 7. Time integration
+## 7. Fourier extraction
 
-Only a short run is needed.
+At each timestep, the Fourier coefficient of population $i$ is evaluated as
 
-A typical choice is
-
-\[
-N_t=10\text{--}20
-\]
-
-time steps.
-
-At every step:
-
-1. compute \(\rho\) and \(\mathbf u\);
-2. evaluate the quadratic equilibrium;
-3. perform BGK collision;
-4. stream periodically;
-5. extract the Fourier coefficient at the initialized wavevector;
-6. evaluate the kinetic observability diagnostics.
-
-Because the initial state is an exact linear eigenmode, no long-time statistical averaging is required.
-
-The perturbation amplitude should be monitored to confirm exponential decay with the eigenvalue predicted by the amplification matrix.
-
----
-
-## 8. Fourier-space extraction of the population mode
-
-The diagnostic should be evaluated from the complex Fourier coefficient of each population.
-
-For each \(i\),
-
-\[
-\widehat f_i(\mathbf k,t)
-=
+$$
+\widehat f_i(𝐤,t) =
 \frac{1}{N_xN_y}
-\sum_{\mathbf x}
+\sum_{𝐱}
 \left[
-f_i(\mathbf x,t)-w_i\rho_0
+f_i(𝐱,t)-w_i\rho_0
 \right]
-e^{-i\mathbf k\cdot\mathbf x}.
-\]
+e^{-i𝐤\cdot𝐱}.
+$$
 
-The use of Fourier coefficients is preferable to a pointwise real-space diagnostic because the discrete eigenvector is generally complex and different populations may carry different phases.
+The linear equilibrium contribution is
 
-Define the Fourier-space equilibrium perturbation from the measured density and momentum mode, or equivalently use the linear equilibrium projector:
+$$
+\widehat{𝐟}^{eq} =
+P_{eq}\widehat{𝐟},
+$$
 
-\[
-\widehat{\mathbf f}^{eq}
-=
-P_{eq}\widehat{\mathbf f}.
-\]
+and therefore
 
-Then
+$$
+\widehat{𝐟}^{neq} =
+(I-P_{eq})\widehat{𝐟}.
+$$
 
-\[
-\boxed{
-\widehat{\mathbf f}^{neq}
-=
-(I-P_{eq})\widehat{\mathbf f}.
-}
-\]
-
-For the small-amplitude verification, this linear Fourier-space definition is the cleanest diagnostic.
+Using Fourier-space populations avoids ambiguities associated with the population-dependent phases of the discrete eigenvector.
 
 ---
 
-## 9. Hydrodynamic and kinetic projectors
+## 8. Hydrodynamic and kinetic projectors
 
-Define the D2Q9 weighted population metric
+The weighted D2Q9 population norm is
 
-\[
-\|g\|_{w,9}^2
-=
+$$
+\|g\|_{w,9}^2 =
 g^\dagger W_9^{-1}g.
-\]
+$$
 
-Let
+Let $P_{\le1,9}$ be the weighted projector onto density and momentum, and let $P_{\le2,9}$ be the projector onto Hermite orders $0$, $1$, and $2$.
 
-\[
-P_{\le1,9}
-\]
+Define
 
-be the weighted projector onto density and momentum, and
-
-\[
-P_{\le2,9}
-\]
-
-the weighted projector onto Hermite orders \(0,1,2\).
-
-Then
-
-\[
-P_{2,9}
-=
+$$
+P_{2,9} =
 P_{\le2,9}-P_{\le1,9},
-\]
+$$
 
 and
 
-\[
-P_{K,9}
-=
+$$
+P_{K,9} =
 I-P_{\le2,9}.
-\]
+$$
 
-For the Fourier non-equilibrium vector,
+The hydrodynamic second-order and kinetic components are
 
-\[
-\boxed{
-h_s
-=
-P_{2,9}\widehat{\mathbf f}^{neq},
-}
-\]
+$$
+h_s =
+P_{2,9}\widehat{𝐟}^{neq},
+$$
 
-\[
-\boxed{
-k_s
-=
-P_{K,9}\widehat{\mathbf f}^{neq}.
-}
-\]
+and
+
+$$
+k_s =
+P_{K,9}\widehat{𝐟}^{neq}.
+$$
 
 The primary numerical observable is
 
-\[
-\boxed{
-\eta_K^{LBM}
-=
+$$
+\eta_K^{LBM} =
 \frac{
 \|k_s\|_{w,9}
 }{
 \|h_s\|_{w,9}
 }.
-}
-\]
+$$
 
-For an exact eigenmode this value should be independent of time, apart from floating-point and nonlinear-amplitude effects.
+For an exact eigenmode, this ratio should be independent of time in the linear regime.
 
 ---
 
-## 10. Analytical coefficients to be tested
+## 9. Analytical coefficients
 
-Use the theoretical notation
+Introduce
 
-\[
-q
-=
+$$
+q =
 \cos^2\theta\sin^2\theta,
 \qquad
-\xi
-=
+\xi =
 2\tau-1.
-\]
+$$
 
-The leading coefficient is
+The leading coefficient satisfies
 
-\[
-\boxed{
-A^2(\theta,\tau)
-=
+$$
+A^2(\theta,\tau) =
 \frac{\xi^2}{6}(1-3q).
-}
-\]
+$$
 
-For \(\tau>1/2\),
+For $\tau>1/2$,
 
-\[
-A(\theta,\tau)
-=
-\frac{\xi}{\sqrt6}
+$$
+A(\theta,\tau) =
+\frac{\xi}{\sqrt{6}}
 \sqrt{1-3q}.
-\]
+$$
 
-The next-order coefficient is
+The finite-wavenumber coefficient is
 
-\[
-\boxed{
-B(\theta,\tau)
-=
+$$
+B(\theta,\tau) =
 \frac{
 \xi^4
 +
@@ -540,511 +389,301 @@ q^2(72\xi^4-42\xi^2-4)
 }{
 12\xi^2(1-3q)
 }.
-}
-\]
+$$
 
-The numerical experiment should test
+The quantity tested numerically is therefore
 
-\[
-\boxed{
-\eta_K^{LBM}
-=
+$$
+\eta_K^{LBM} =
 Ak
 \left[
 1+Bk^2+O(k^4)
 \right].
-}
-\]
+$$
 
 ---
 
-## 11. Recommended parameter set
+## 10. Production parameters
 
-A compact but sufficient parameter sweep is:
+The production configuration used for the manuscript is:
 
-### Relaxation times
+| Parameter | Value |
+|---|---|
+| Lattice | D2Q9 |
+| Domain | $256\times256$ |
+| Relaxation times | $\tau=0.9,\ 1.0,\ 1.1$ |
+| Direction families | $[10],\ [21],\ [11]$ |
+| Harmonics | 8 per direction |
+| Perturbation amplitude | $\varepsilon=10^{-6}$ |
+| Boundary conditions | Periodic |
+| Collision model | BGK |
+| Forcing | None |
 
-\[
-\tau
-=
-0.9,\quad1.0,\quad1.1.
-\]
+The complete sweep contains
 
-These values sample:
+$$
+3\times3\times8=72
+$$
 
-- a case inside the globally non-negative-\(B\) interval;
-- the particularly convenient \(\tau=1\) case;
-- a case outside the global \(B\ge0\) interval.
+independent simulations.
 
-### Angles
-
-Use three lattice-compatible directions:
-
-\[
-\theta=0,
-\]
-
-\[
-\theta=\arctan(1/2),
-\]
-
-\[
-\theta=\frac{\pi}{4}.
-\]
-
-### Wavenumbers
-
-Use approximately 6–8 values satisfying
-
-\[
-0.05\lesssim k\lesssim0.5.
-\]
-
-The smallest values should establish the asymptotic limit; the larger values show where the cubic approximation begins to lose accuracy.
-
-A practical way to preserve a fixed direction is to keep \((m_x:m_y)\) constant and vary the domain size \(N\).
-
-### Perturbation amplitude
-
-Principal tests:
-
-\[
-\varepsilon=10^{-6}.
-\]
-
-A minimal amplitude-sensitivity check can be performed for one representative case with
-
-\[
-\varepsilon
-=
-10^{-6},\quad
-10^{-4},\quad
-10^{-2}.
-\]
-
-No full Mach-number study is required.
+The five smallest wavenumbers in each $(\theta,\tau)$ family are used for asymptotic coefficient recovery.
 
 ---
 
-## 12. Primary post-processing diagnostics
+## 11. Primary diagnostics
 
-### 12.1 Leading-order coefficient
+### Leading-order coefficient
 
 Define
 
-\[
-R_A(k)
-=
+$$
+R_A(k) =
 \frac{\eta_K^{LBM}}{k}.
-\]
+$$
 
 The expected limit is
 
-\[
-\boxed{
-R_A(k)\rightarrow A(\theta,\tau)
+$$
+R_A(k)
+\rightarrow
+A(\theta,\tau)
 \qquad
-k\rightarrow0.
-}
-\]
+\text{as } k\rightarrow0.
+$$
 
-A plot of \(R_A\) against \(k^2\) should therefore have intercept \(A\).
+Equivalently, plotting $R_A$ against $k^2$ should approach an intercept equal to $A$.
 
----
-
-### 12.2 Direct test of the finite-\(k\) coefficient
+### Finite-wavenumber coefficient
 
 Define
 
-\[
-\boxed{
-R_B(k)
-=
+$$
+R_B(k) =
 \frac{
 \eta_K^{LBM}/[A(\theta,\tau)k]-1
 }{
 k^2
 }.
-}
-\]
+$$
 
-The theoretical prediction is
+The asymptotic prediction is
 
-\[
-\boxed{
-R_B(k)
-=
-B(\theta,\tau)+O(k^2).
-}
-\]
+$$
+R_B(k) =
+B(\theta,\tau)+O(k^2),
+$$
 
-Therefore,
+so that
 
-\[
-R_B(k)\rightarrow B
-\]
+$$
+R_B(k)\rightarrow B(\theta,\tau)
+\qquad
+\text{as } k\rightarrow0.
+$$
 
-as \(k\rightarrow0\).
+This provides a direct numerical test of the analytical coefficient $B$.
 
-This is the most direct numerical verification of the symbolic coefficient \(B\).
-
----
-
-### 12.3 Error of the cubic approximation
+### Cubic-approximation error
 
 Define
 
-\[
-\eta_{AB}
-=
+$$
+\eta_{AB} =
 Ak(1+Bk^2),
-\]
+$$
 
 and
 
-\[
-\boxed{
-E_{AB}(k)
-=
+$$
+E_{AB}(k) =
 \frac{
 |\eta_K^{LBM}-\eta_{AB}|
 }{
 |\eta_K^{LBM}|
 }.
-}
-\]
+$$
 
-Because
+Since
 
-\[
-\eta_K
-=
-Ak[1+Bk^2+O(k^4)],
-\]
+$$
+\eta_K^{LBM} =
+Ak
+\left[
+1+Bk^2+O(k^4)
+\right],
+$$
 
-the relative error should behave as
+the expected relative truncation error is
 
-\[
-\boxed{
-E_{AB}(k)=O(k^4)
-}
-\]
+$$
+E_{AB}(k)=O(k^4).
+$$
 
-in the asymptotic regime.
-
-A log-log plot should therefore approach a slope of four.
+A log-log fit of $E_{AB}$ against $k$ should therefore approach a slope of four.
 
 ---
 
-### 12.4 Exact-eigenmode temporal invariance
+## 12. Coefficient fitting
 
-At fixed \((k,\theta,\tau)\), define
+For each $(\theta,\tau)$ family, fit the smallest five wavenumbers using
 
-\[
-E_t
-=
-\frac{
-|\eta_K^{LBM}(t)-\eta_K^{LBM}(0)|
-}{
-|\eta_K^{LBM}(0)|
-}.
-\]
+$$
+\frac{\eta_K^{LBM}}{k} =
+A_{\mathrm{fit}}
++
+C_2 k^2
++
+C_4 k^4.
+$$
 
-For a sufficiently small perturbation initialized with the exact shear eigenvector,
+The recovered finite-wavenumber coefficient is then
 
-\[
-E_t
-\]
+$$
+B_{\mathrm{fit}} =
+\frac{C_2}{A_{\mathrm{fit}}}.
+$$
 
-should remain close to machine precision over the short run.
+The fitted values $A_{\mathrm{fit}}$ and $B_{\mathrm{fit}}$ are compared directly with their analytical counterparts.
 
-This is primarily an implementation check and need not become a paper figure unless unexpected behavior occurs.
+Including the $k^4$ contribution reduces bias from the next neglected term in the asymptotic expansion.
 
 ---
 
-## 13. Minimal amplitude check
+## 13. Amplitude check
 
-The theory is a linearized tangent result.
+The main calculation uses
 
-For one representative case, e.g.
+$$
+\varepsilon=10^{-6},
+$$
 
-\[
-\tau=1,
-\qquad
-\theta=\arctan(1/2),
-\qquad
-k\approx0.2,
-\]
+so that the dynamics remain in the tangent regime.
 
-repeat the simulation for
+For a representative configuration, the calculation may also be repeated at
 
-\[
-\varepsilon
-=
-10^{-6},\quad10^{-4},\quad10^{-2}.
-\]
+$$
+\varepsilon =
+10^{-6},\ 10^{-4},\ 10^{-2}.
+$$
 
-Compute
+A convenient relative measure is
 
-\[
-E_\varepsilon
-=
+$$
+E_\varepsilon =
 \frac{
 |\eta_K(\varepsilon)-\eta_K(10^{-6})|
 }{
 |\eta_K(10^{-6})|
 }.
-\]
+$$
 
-Expected behavior:
+The $10^{-6}$ and $10^{-4}$ results should be indistinguishable within numerical accuracy, while the largest amplitude may show finite-amplitude effects.
 
-- \(10^{-6}\) and \(10^{-4}\) should be indistinguishable up to numerical precision;
-- \(10^{-2}\) may show a measurable finite-amplitude deviation.
-
-This is sufficient to demonstrate that the principal validation is genuinely in the tangent regime without adding a separate finite-Mach study.
+This check is auxiliary and is not part of the principal production sweep.
 
 ---
 
-## 14. Minimal figures
+## 14. Recommended outputs
 
-### Figure 1 — finite-wavenumber transfer relation
+### Primary figure
 
 Plot
 
-\[
-\frac{\eta_K^{LBM}}{A k}
-\]
+$$
+\frac{\eta_K^{LBM}}{Ak}
+$$
 
-against
+against $k^2$ for the three propagation directions at $\tau=1$.
 
-\[
-k^2.
-\]
+The analytical finite-wavenumber prediction is
 
-Overlay
+$$
+1+B(\theta,\tau)k^2.
+$$
 
-\[
-1+B k^2.
-\]
+This representation simultaneously tests the leading normalization and the orientation-dependent finite-$k$ correction.
 
-Use the three propagation directions for one representative \(\tau\), preferably
+### Secondary diagnostics
 
-\[
-\tau=1.
-\]
+Useful auxiliary outputs are:
 
-This figure simultaneously shows the leading normalization and angular finite-\(k\) correction.
+- $R_B(k)$ versus $k^2$;
+- $E_{AB}(k)$ versus $k$ on log-log axes;
+- fitted $A$ and $B$ coefficients for all nine $(\theta,\tau)$ combinations;
+- an optional amplitude-sensitivity check.
 
----
+A compact coefficient table can use the structure:
 
-### Figure 2 — asymptotic coefficient and truncation error
-
-Preferred option: two panels.
-
-Panel (a):
-
-\[
-R_B(k)
-=
-\frac{
-\eta_K^{LBM}/(Ak)-1
-}{
-k^2
-}
-\]
-
-versus \(k^2\), with horizontal lines at the exact analytical \(B\).
-
-Panel (b):
-
-\[
-E_{AB}(k)
-\]
-
-versus \(k\) on log-log axes, with a reference \(k^4\) slope.
-
-If the paper must remain extremely compact, Figure 1 and panel (a) alone may be sufficient.
-
----
-
-## 15. Minimal numerical table
-
-A compact table should report fitted asymptotic coefficients.
-
-Suggested columns:
-
-| \(\tau\) | direction | \(A_{\mathrm{exact}}\) | \(A_{\mathrm{fit}}\) | relative error | \(B_{\mathrm{exact}}\) | \(B_{\mathrm{fit}}\) | relative error |
+| $\tau$ | Direction | $A_{\mathrm{exact}}$ | $A_{\mathrm{fit}}$ | Relative error | $B_{\mathrm{exact}}$ | $B_{\mathrm{fit}}$ | Relative error |
 |---:|---|---:|---:|---:|---:|---:|---:|
 
-The fit should use only the smallest \(k\) values where the asymptotic expansion is demonstrably converged.
+---
 
-The table is more useful than listing raw simulation values.
+## 15. Implementation checks
+
+Before accepting the production results, verify automatically that:
+
+1. the selected mode has negligible density perturbation;
+2. its momentum is transverse to the wavevector:
+
+$$
+𝐤\cdot\delta𝐣\approx0;
+$$
+
+3. the measured modal decay agrees with the selected eigenvalue:
+
+$$
+\widehat{𝐟}(t+1)
+\approx
+\lambda_s\widehat{𝐟}(t);
+$$
+
+4. $\eta_K^{LBM}$ is constant in time for exact-eigenmode initialization;
+5. reducing the perturbation amplitude does not change the normalized result;
+6. the Fourier convention is consistent with
+
+$$
+\mathsf S_{ii} =
+e^{-i𝐤\cdot𝐜_i}.
+$$
+
+These checks should be implemented as assertions or retained as diagnostic outputs.
 
 ---
 
-## 16. Fitting procedure
+## 16. Interpretation
 
-For each \((\theta,\tau)\), fit
+Experiment I is successful if the numerical populations recover all three asymptotic properties:
 
-\[
+$$
 \frac{\eta_K^{LBM}}{k}
-=
-A
-+
-AB\,k^2
-+
-Ck^4.
-\]
+\rightarrow
+A(\theta,\tau),
+$$
 
-A simple least-squares fit over the smallest 4–6 wavenumbers is sufficient.
-
-Then
-
-\[
-A_{\mathrm{fit}}
-=
-\text{intercept},
-\]
+$$
+R_B(k)
+\rightarrow
+B(\theta,\tau),
+$$
 
 and
 
-\[
-B_{\mathrm{fit}}
-=
-\frac{
-\text{coefficient of }k^2
-}{
-A_{\mathrm{fit}}
-}.
-\]
+$$
+E_{AB}(k)\sim k^4.
+$$
 
-Including the \(k^4\) term reduces bias from the next neglected asymptotic correction.
+Together with amplitude independence in the linear regime, these results establish that
 
-The fitted values should be compared with the analytical \(A\) and \(B\).
-
----
-
-## 17. Numerical precision and reproducibility
-
-Use:
-
-- double precision for the LBM evolution;
-- complex double precision for Fourier coefficients and eigenvectors;
-- direct dense eigensolution of the \(9\times9\) amplification matrix;
-- deterministic mode ordering and branch-selection criteria;
-- exact velocity and weight tables shared with the theoretical symbolic scripts.
-
-All projector matrices should be generated once from the exact D2Q9 velocity set and weights.
-
-The complete experiment should be reproducible with a small Python/NumPy implementation.
-
-No external LBM library is required.
-
----
-
-## 18. Important implementation checks
-
-Before producing paper-quality results, verify:
-
-1. mass perturbation of the selected shear mode is negligible;
-2. momentum perturbation is transverse:
-   \[
-   \mathbf k\cdot\delta\mathbf j\approx0;
-   \]
-3. the measured decay factor agrees with the selected eigenvalue:
-   \[
-   \widehat f(t+1)/\widehat f(t)\approx\lambda_s;
-   \]
-4. \(\eta_K^{LBM}\) is constant in time for exact-eigenmode initialization;
-5. results are independent of domain size when \(k\) is held fixed;
-6. results are independent of perturbation amplitude in the linear regime;
-7. the Fourier transform convention is consistent with the sign used in
-   \[
-   \mathsf S_{ii}=e^{-i\mathbf k\cdot\mathbf c_i}.
-   \]
-
-These checks should be automated as assertions whenever possible.
-
----
-
-## 19. Interpretation criteria
-
-The experiment should be considered successful if the following are observed:
-
-### Leading CE2 relation
-
-\[
-\frac{\eta_K^{LBM}}{k}
-\rightarrow
-A(\theta,\tau).
-\]
-
-### Next-order finite-\(k\) correction
-
-\[
-R_B(k)
-\rightarrow
-B(\theta,\tau).
-\]
-
-### Correct asymptotic truncation behavior
-
-\[
-E_{AB}\sim k^4.
-\]
-
-### Linear-amplitude independence
-
-\[
-\eta_K^{LBM}
-\]
-
-is unchanged as \(\varepsilon\rightarrow0\).
-
-These four observations would constitute direct numerical evidence that the analytical kinetic-observability transfer function is present in the actual D2Q9 BGK dynamics.
-
----
-
-## 20. What this experiment does not attempt to establish
-
-This experiment deliberately does **not** test:
-
-- turbulence;
-- finite-Mach nonlinear populations;
-- boundary effects;
-- forcing schemes;
-- MRT or cumulant collision;
-- under-resolution sensing;
-- adaptive mesh refinement;
-- the HIT \(P/\Omega\) identity.
-
-Its sole purpose is the clean numerical verification of the D2Q9 spectral corollary derived in the theoretical section.
-
-Keeping this experiment narrowly focused is essential: any discrepancy can then be attributed to the spectral theory, implementation, or asymptotic truncation rather than to unrelated flow physics.
-
----
-
-## 21. Expected role in the paper
-
-The numerical subsection can be compact.
-
-A suitable title is:
-
-> **Numerical verification of the D2Q9 shear-mode transfer function**
-
-The associated text should emphasize that the exact eigenmode initialization isolates the discrete shear branch and that the comparison is performed against the complete nonlinear collision-streaming implementation, not by evaluating the analytical amplification matrix alone.
-
-The main scientific result of the experiment should be stated in terms of asymptotic convergence:
-
-\[
-\boxed{
-\eta_K^{LBM}
-=
+$$
+\eta_K^{LBM} =
 A(\theta,\tau)k
 \left[
 1+B(\theta,\tau)k^2+O(k^4)
 \right]
-}
-\]
+$$
 
-with the analytical coefficients recovered numerically from time-evolved lattice populations.
+is recovered directly from the full D2Q9 BGK collision-streaming dynamics.
+
+The experiment does not address turbulence, boundaries, forcing, nonlinear finite-Mach populations, alternative collision models, or adaptive-resolution effects. Its purpose is deliberately narrow: **to verify the D2Q9 finite-wavenumber shear transfer relation and its analytical coefficients directly from evolved lattice populations.**
