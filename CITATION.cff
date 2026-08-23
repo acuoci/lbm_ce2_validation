@@ -1,13 +1,50 @@
 cff-version: 1.2.0
-message: "If you use this software, please cite the associated Physics of Fluids article and the archived software release."
-title: "LBM CE2 Population-Observability Numerical Validation"
+message: "If you use this software, please cite the software release and the associated paper."
+
+title: "Observability of Velocity Derivatives from Kinetic Populations in the Lattice Boltzmann Method"
 type: software
+
 authors:
-  - family-names: Cuoci
-    given-names: Alberto
-year: 2026
-license: MIT
-repository-code: "REPLACE_WITH_GITHUB_REPOSITORY_URL"
-# After archiving a release (e.g. with Zenodo), add:
-# doi: "10.5281/zenodo.XXXXXXX"
-# version: "1.0.0"
+  - family-names: "Cuoci"
+    given-names: "Alberto"
+
+version: "1.0.0"
+
+date-released: "2026-08-23"
+
+license: "MIT"
+
+repository-code: "https://github.com/acuoci/lbm_ce2_validation"
+
+url: "https://github.com/acuoci/lbm_ce2_validation"
+
+abstract: >
+  Python implementation and reproducibility material for the numerical
+  validation of kinetic derivative observability in D2Q9, D3Q19, and
+  D3Q27 lattice Boltzmann models. The repository contains the numerical
+  experiments supporting the associated Physics of Fluids manuscript,
+  including finite-wavenumber D2Q9 shear-mode validation,
+  three-dimensional D3Q19/D3Q27 CE2 population-response calculations,
+  and a weakly nonlinear Taylor-Green cross-check.
+
+keywords:
+  - Lattice Boltzmann Method
+  - LBM
+  - kinetic populations
+  - Chapman-Enskog expansion
+  - observability
+  - D2Q9
+  - D3Q19
+  - D3Q27
+  - computational fluid dynamics
+  - reproducibility
+
+preferred-citation:
+  type: article
+  title: "Observability of Velocity Derivatives from Kinetic Populations in the Lattice Boltzmann Method"
+  authors:
+    - family-names: "Cuoci"
+      given-names: "Alberto"
+  journal: "Physics of Fluids"
+  status: "submitted"
+  year: 2026
