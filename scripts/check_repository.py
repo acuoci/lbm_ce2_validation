@@ -10,9 +10,11 @@ python_sources = [
     ROOT / "src/experiment_II_3D_shear.py",
     ROOT / "src/experiment_III_taylor_green.py",
     ROOT / "src/curvature_reconstruction_exact.py",
+    ROOT / "src/curvature_reconstruction.py",
     ROOT / "scripts/generate_d3q15_operator.py",
     ROOT / "tests/test_d3q15_operator.py",
     ROOT / "tests/test_curvature_reconstruction_exact.py",
+    ROOT / "tests/test_curvature_reconstruction.py",
 ]
 required_inputs = [
     ROOT / "operators/Lhat_D3Q15.csv",
