@@ -100,12 +100,12 @@ python -m unittest discover -s tests     # Steps 1, 2A, 2B
 python scripts/check_repository.py
 ```
 
-Maximum relative residuals of $\mathbf d^{rec}$ against the exact $D_Q\mathbf q$, for synthetic CE2 data. The tests use five deterministic $\mathbf q$, $\tau\in\{0.55,0.8,1.0,1.9\}$ and $\rho_0\in\{0.5,1,3\}$.
+Maximum relative residuals of $\mathbf d^{rec}$ against the exact $D_Q\mathbf q$, for synthetic CE2 data. The tests use five deterministic $\mathbf q$, $\tau\in\{0.55,0.8,1.0,1.9\}$ and $\rho_0\in\{0.5,1,3\}$. Measured with Python 3.10.12 and NumPy 2.2.6; the last digit can vary with the BLAS/NumPy build.
 
 | Lattice | normalized | kinetic | non-equilibrium | populations |
 |---|---|---|---|---|
-| D3Q15 | 3.9e-16 | 5.2e-16 | 5.2e-16 | 3.6e-13 |
-| D3Q19 | 6.5e-16 | 6.5e-16 | 6.5e-16 | 3.8e-13 |
-| D3Q27 | 2.2e-16 | 4.3e-16 | 4.3e-16 | 8.0e-13 |
+| D3Q15 | 2.6e-16 | 3.9e-16 | 3.9e-16 | 2.8e-13 |
+| D3Q19 | 3.2e-16 | 4.3e-16 | 4.3e-16 | 3.8e-13 |
+| D3Q27 | 2.2e-16 | 4.3e-16 | 4.3e-16 | 7.0e-13 |
 
 The population-path residuals reflect the cancellation described in §6. The smallest test vector has entries of order $10^{-3}$.

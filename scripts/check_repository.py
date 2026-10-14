@@ -13,14 +13,17 @@ python_sources = [
     ROOT / "src/curvature_reconstruction.py",
     ROOT / "src/experiment_IV_linearized_reconstruction.py",
     ROOT / "src/experiment_IV_parity_analysis.py",
+    ROOT / "src/experiment_IV_full_bgk_reconstruction.py",
     ROOT / "scripts/generate_d3q15_operator.py",
     ROOT / "scripts/reproduce_experiment_IV_linearized.py",
     ROOT / "scripts/reproduce_experiment_IV_parity.py",
+    ROOT / "scripts/reproduce_experiment_IV_full_bgk.py",
     ROOT / "tests/test_d3q15_operator.py",
     ROOT / "tests/test_curvature_reconstruction_exact.py",
     ROOT / "tests/test_curvature_reconstruction.py",
     ROOT / "tests/test_experiment_IV_linearized.py",
     ROOT / "tests/test_experiment_IV_parity.py",
+    ROOT / "tests/test_experiment_IV_full_bgk.py",
 ]
 required_inputs = [
     ROOT / "operators/Lhat_D3Q15.csv",

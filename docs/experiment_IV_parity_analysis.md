@@ -48,12 +48,12 @@ Since the weights are symmetric, $\mathcal P_Q$ is self-adjoint in the $W^{-1}$ 
 
 ### 3.2 Consistency with Step 3
 
-Maxima over the 48 cases:
+Maxima over the 48 cases (Python 3.10.12, NumPy 2.2.6; round-off-level values vary slightly between machines):
 
 | Check | Value |
 |---|---|
-| $\lvert E^{rec}(R^H\mathbf e)-E^{rec}(\text{Step 3})\rvert/E^{rec}$ | 1.1e-13 |
-| $\lVert R^H\mathbf e-R^H\mathbf e^-\rVert/\lVert R^H\mathbf e\rVert$ | 1.4e-15 |
+| $\lvert E^{rec}(R^H\mathbf e)-E^{rec}(\text{Step 3})\rvert/E^{rec}$ | 1.3e-13 |
+| $\lVert R^H\mathbf e-R^H\mathbf e^-\rVert/\lVert R^H\mathbf e\rVert$ | 1.1e-15 |
 | Even part of the CE2 prediction | 0 |
 
 ### 3.3 Numerical convergence ($N\ge48$, 5 points, $k\in[0.184,0.490]$)
@@ -86,7 +86,7 @@ These are statements about norms only; convergence of the coefficient vectors th
 
 The ratio $r_Q$ falls from 0.22–0.90 at $N=24$ to 0.04–0.17 at $N=128$. So at small $k$ the population error is dominated by its even part.
 
-**Mirrored branch.** The shear eigenvectors computed at $-\mathbf k$, with the same selection and normalization, satisfy $\mathbf v(-\mathbf k)=-\mathcal P\mathbf v(\mathbf k)$. The residual is at most 2.5e-14 at $N=24$ and rises to at most 1.4e-11 at $N=128$, consistent with eigenvector conditioning of about machine epsilon divided by the shear-pair gap (5.6e-6 at $N=128$). The minus sign keeps $\mathbf U$ unchanged, because $\mathbf U(\mathcal P\mathbf v)=-\mathbf U(\mathbf v)$.
+**Mirrored branch.** The shear eigenvectors computed at $-\mathbf k$, with the same selection and normalization, satisfy $\mathbf v(-\mathbf k)=-\mathcal P\mathbf v(\mathbf k)$. The residual is at most 2.5e-14 at $N=24$ and rises to at most 2.3e-11 at $N=128$, consistent with eigenvector conditioning of about machine epsilon divided by the shear-pair gap (5.6e-6 at $N=128$). The minus sign keeps $\mathbf U$ unchanged, because $\mathbf U(\mathcal P\mathbf v)=-\mathbf U(\mathbf v)$.
 
 ### 3.4 Figure
 
