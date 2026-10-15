@@ -66,6 +66,21 @@ python scripts/reproduce_experiment_III.py
 
 This experiment also requires the two `Lhat` operator CSV files.
 
+### Experiment IV — publication figures
+
+`scripts/plot_experiment_IV_paper_figures.py` draws the two Experiment IV manuscript figures from the stored validation results in `reference_results/experiment_IV_linearized/` and `reference_results/experiment_IV_full_bgk/`; no simulation is rerun. The script verifies the data before plotting and aborts without writing figures if any check fails.
+
+```bash
+python scripts/plot_experiment_IV_paper_figures.py            # writes Figures/*.pdf, Figures/*.png
+python scripts/plot_experiment_IV_paper_figures.py --outdir Figures --results-dir reference_results
+```
+
+Outputs:
+
+- `Figures/figure_IV_population_vs_reconstruction.{pdf,png}`
+- `Figures/figure_IV_full_bgk_vs_linearized.{pdf,png}`
+- `Figures/figure_IV_paper_verification.txt`
+
 ## Repository layout
 
 ```text
