@@ -1,0 +1,40 @@
+Experiment IV publication figures - verification report
+
+[PASS] 1. six lattice/branch combinations in linearized data
+[PASS] 1. six lattice/branch combinations in full-BGK data (U0=1e-6, t=8)
+[PASS] 1. linearized N set per series = 24,32,40,48,64,80,96,128  (48 rows)
+[PASS] 1. full-BGK N set per series = 24,32,48,64,80  (30 rows)
+[PASS] 2. k_norm = 2*pi*sqrt(14)/N in both datasets  (max rel. dev. 1.9e-16)
+[PASS] 2. full-BGK k_norm identical to linearized k_norm at equal N
+[PASS] 2. stored k components = (2 pi/N)(1,2,3)
+[PASS] 4. full-BGK subset: U0 = 1e-6, t = 8, tau = 1, rho0 = 1  (30 of 150 stored full-BGK records)
+[PASS] 4. linearized data: tau = 1, rho0 = 1
+[PASS] 5. E_linearized_step3 (full-BGK file) = reconstruction_error (Step 3 file)  (max rel. diff. 0.0e+00)
+[PASS] 5. full-BGK E_RMS vs exact linearized (stored diagnostic)  (max rel. diff. 2.80e-06)
+[PASS] 6. no excluding flags in linearized data  (flags present: ['T_reference_small'] (T-only flags do not affect E_pop/E_rec))
+[PASS] 6. no excluding flags in full-BGK data  (flags present: ['T_nonlinear_limited', 'T_reference_small', 'pre_asymptotic_k'] (informative only))
+[PASS] 6. all plotted values finite and positive (log axes)
+[PASS] 3. recomputed E_rec (exact linearized) = stored values  (max rel. diff. 0.0e+00)
+[PASS] 3. recomputed E_pop (exact linearized) = stored values  (max rel. diff. 0.0e+00)
+[PASS] 3. recomputed k = stored k  (max rel. diff. 0.0e+00)
+[PASS] 3/6. plotted data identical to stored data: Figure A (a) E_pop  (48 points)
+[PASS] 3/6. plotted data identical to stored data: Figure A (b) E_rec  (48 points)
+[PASS] 3/6. plotted data identical to stored data: Figure B lines (exact linearized)  (48 points)
+[PASS] 3/6. plotted data identical to stored data: Figure B symbols (full BGK)  (30 points)
+[PASS] shared horizontal limits in all panels  ([0.1733, 1.0383])
+
+Stored convergence exponents (fits produced by the validation scripts; N >= 48):
+lattice branch  p(E_pop)  p(E_rec)  p(E_RMS, full BGK)
+D3Q15   s1         1.040     2.037               2.055
+D3Q15   s2         1.054     2.025               2.037
+D3Q19   s1         1.024     2.011               2.016
+D3Q19   s2         1.106     2.024               2.035
+D3Q27   s1         1.016     2.003               2.004
+D3Q27   s2         1.022     2.023               2.034
+(linearized: N = 48..128, 5 points; full BGK: N = 48..80, 3 points)
+
+Outputs:
+  Figures/figure_IV_population_vs_reconstruction.pdf
+  Figures/figure_IV_population_vs_reconstruction.png
+  Figures/figure_IV_full_bgk_vs_linearized.pdf
+  Figures/figure_IV_full_bgk_vs_linearized.png
