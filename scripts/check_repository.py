@@ -19,6 +19,7 @@ python_sources = [
     ROOT / "scripts/reproduce_experiment_IV_parity.py",
     ROOT / "scripts/reproduce_experiment_IV_full_bgk.py",
     ROOT / "scripts/plot_experiment_IV_paper_figures.py",
+    ROOT / "scripts/reproduce_experiment_III_time_history.py",
     ROOT / "tests/test_d3q15_operator.py",
     ROOT / "tests/test_curvature_reconstruction_exact.py",
     ROOT / "tests/test_curvature_reconstruction.py",
