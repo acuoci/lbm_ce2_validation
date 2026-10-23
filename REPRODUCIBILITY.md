@@ -102,10 +102,22 @@ The production calculations are independent and may be run separately. The Exper
 
 | Directory | Content |
 |---|---|
+| `reference_results/experiment_I/` | Experiment I production sweep: per-case results, fitted $A$, $B$ coefficients, figures |
+| `reference_results/experiment_II/` | Experiment II production sweep: per-case results, convergence fits, figures |
+| `reference_results/experiment_III/` | Experiment III amplitude sweep ($U_0$ = 0.005, 0.01, 0.02, to $t^*$ = 0.02): records and diagnostic figures |
 | `reference_results/experiment_III/time_history/` | Experiment III time history at $U_0$ = 0.02, the audit of the protocol tables, manuscript figure (PDF/PNG) |
 | `reference_results/experiment_IV_linearized/` | Experiment IV exact linearized results, fits, figures |
 | `reference_results/experiment_IV_parity/` | Experiment IV parity analysis, identities, fits, figure |
 | `reference_results/experiment_IV_full_bgk/` | Experiment IV full-BGK results, fits, figures |
 | `Figures/` | Experiment IV publication figures and their verification report |
 
-The Experiment I and II production scripts, and the Experiment III amplitude-sweep driver, write to `reference_results/experiment_I/`, `experiment_II/` and `experiment_III/`. Those outputs are regenerated on demand and are not archived in this release.
+The Experiment I–III production outputs in v0.2.0 were generated with the unmodified production scripts listed above (Python 3.10, NumPy 2.2, SymPy 1.14, Matplotlib 3.10, Linux). The production scripts were not changed for this release.
+
+Reruns on other platforms reproduce these files to rounding level. The Experiment III records agree to about $10^{-12}$ relative. Two Experiment I/II quantities are limited by the small perturbation amplitude ($\varepsilon=10^{-6}$) and can differ more between platforms:
+
+- the fitted Experiment I coefficient $B$, by about $3\times10^{-5}$ relative;
+- the smallest-$k$ Experiment II errors, by about $10^{-7}$ relative.
+
+In both cases the accuracy of the comparison with theory is unchanged: $B$ is recovered to $\le 4\times10^{-4}$ relative error, and the fitted orders of convergence agree to $10^{-6}$.
+
+Note: `reproduce_experiment_III.py` writes `figure_III_1_global_CE2_error.png` (all amplitudes) to `reference_results/experiment_III/`. The manuscript time-history figure with the same name is the one in `reference_results/experiment_III/time_history/`.

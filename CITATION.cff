@@ -10,6 +10,8 @@ authors:
 
 version: "0.2.0"
 
+date-released: "2026-10-23"
+
 license: "MIT"
 
 repository-code: "https://github.com/acuoci/lbm_ce2_validation"

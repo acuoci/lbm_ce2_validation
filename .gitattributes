@@ -1,0 +1,6 @@
+# Keep archived numerical data byte-for-byte identical on every platform.
+# The operator CSVs use CRLF line endings and are compared byte for byte by
+# scripts/generate_d3q15_operator.py and scripts/generate_reconstruction_operators.py.
+*.csv -text
+*.png binary
+*.pdf binary

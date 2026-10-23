@@ -66,12 +66,23 @@ PYTHON_SOURCES = [
 ]
 
 REQUIRED_FILES = {
-    "metadata": ["README.md", "REPRODUCIBILITY.md", "CHANGELOG.md", "CITATION.cff", "LICENSE", "requirements.txt"],
+    "metadata": ["README.md", "REPRODUCIBILITY.md", "CHANGELOG.md", "CITATION.cff", "LICENSE", "requirements.txt",
+                 ".gitattributes"],
     "observability operators": [f"operators/Lhat_{q}.csv" for q in ("D3Q15", "D3Q19", "D3Q27")],
     "reconstruction operators": ["operators/reconstruction/observable_functionals.csv",
                                  "operators/reconstruction/sensitivity_factors.csv"]
                                 + [f"operators/reconstruction/{k}_{q}.csv" for k in ("D", "RH")
                                    for q in ("D3Q15", "D3Q19", "D3Q27")],
+    "Experiment I-III production outputs": [
+        "reference_results/experiment_I/" + f for f in (
+            "d2q9_shear_results.csv", "d2q9_fitted_coefficients.csv", "figure1_transfer_relation.png",
+            "figure2a_B_recovery.png", "figure2b_cubic_error.png")] + [
+        "reference_results/experiment_II/" + f for f in (
+            "experiment_II_raw_results.csv", "experiment_II_convergence_fits.csv",
+            "figure_population_vector_error.png", "figure_amplitude_alignment.png")] + [
+        "reference_results/experiment_III/" + f for f in (
+            "experiment_III_results.csv", "figure_III_1_global_CE2_error.png",
+            "figure_III_2_amplitude_alignment.png", "figure_III_3_spectral_centroid.png")],
     "Experiment III time history": [
         "reference_results/experiment_III/time_history/" + f for f in (
             "experiment_III_time_history_U0_0.02.csv", "experiment_III_table_audit.csv",
@@ -100,6 +111,9 @@ REQUIRED_FILES = {
 # as tabulated in docs/experiment_III_production_protocol_refined.md, Section 4.
 EXP3_STEP10_TABLE = {"D3Q19": (0.2541, 1.0378, 0.9696), "D3Q27": (0.3246, 1.0573, 0.9517)}
 EXP3_HISTORY_STEPS = (10, 20, 30, 40, 48)
+# Section 4 amplitude sweep (N = 48, tau = 0.8, timestep 10): E for the archived production amplitudes.
+EXP3_SWEEP_STEP10 = {("D3Q19", 0.005): 0.0638, ("D3Q19", 0.01): 0.1272, ("D3Q19", 0.02): 0.2541,
+                     ("D3Q27", 0.005): 0.0814, ("D3Q27", 0.01): 0.1624, ("D3Q27", 0.02): 0.3246}
 
 
 class Report:
@@ -224,6 +238,10 @@ def check_experiment_III(rep: Report) -> None:
            if r["agrees_to_4_decimals"] != "True"]
     rep.add(f"protocol-table audit: {len(audit) - len(bad)}/{len(audit)} entries reproduced to 4 decimals",
             not bad and len(audit) == 32, "; ".join(bad))
+    sweep = _read_csv("reference_results/experiment_III/experiment_III_results.csv")
+    got = {(r["lattice"], float(r["U0"])): round(float(r["E"]), 4) for r in sweep if int(r["step"]) == 10}
+    bad = [f"{k}: {got.get(k)} vs {v}" for k, v in EXP3_SWEEP_STEP10.items() if got.get(k) != v]
+    rep.add("archived amplitude sweep: timestep-10 E = manuscript table (6 entries)", not bad, "; ".join(bad))
     src = (ROOT / "scripts/reproduce_experiment_III_time_history.py").read_text(encoding="utf-8")
     rep.add("figure script plots exactly t = 10, 20, 30, 40, 48",
             "HISTORY_STEPS = (10, 20, 30, 40, 48)" in src)

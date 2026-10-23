@@ -137,7 +137,9 @@ The publication figures are drawn from the stored results; no simulation is reru
 ├── tests/                                    # unittest suite
 ├── docs/                                     # per-experiment protocols and verified results
 ├── reference_results/
-│   ├── experiment_III/time_history/
+│   ├── experiment_I/
+│   ├── experiment_II/
+│   ├── experiment_III/                   # amplitude sweep; time_history/ holds the manuscript figure
 │   ├── experiment_IV_linearized/
 │   ├── experiment_IV_parity/
 │   └── experiment_IV_full_bgk/
@@ -162,6 +164,8 @@ python scripts/check_repository.py          # fast: files, metadata, exact ident
 python scripts/check_repository.py --full   # complete validation suite (about one minute)
 python -m unittest discover -s tests        # unit tests only
 ```
+
+Archived outputs of all production scripts are in `reference_results/`. Their provenance and the cross-platform reproducibility tolerances are listed in [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md).
 
 The fast check verifies:
 
