@@ -8,9 +8,7 @@ authors:
   - family-names: "Cuoci"
     given-names: "Alberto"
 
-version: "1.0.0"
-
-date-released: "2026-08-23"
+version: "0.2.0"
 
 license: "MIT"
 
@@ -18,14 +16,23 @@ repository-code: "https://github.com/acuoci/lbm_ce2_validation"
 
 url: "https://github.com/acuoci/lbm_ce2_validation"
 
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.22070832
+    description: "Zenodo archive DOI recorded for the earlier software release (not the DOI of this version or of the article)."
+
 abstract: >
   Python implementation and reproducibility material for the numerical
-  validation of kinetic derivative observability in D2Q9, D3Q19, and
-  D3Q27 lattice Boltzmann models. The repository contains the numerical
-  experiments supporting the associated Physics of Fluids manuscript,
-  including finite-wavenumber D2Q9 shear-mode validation,
-  three-dimensional D3Q19/D3Q27 CE2 population-response calculations,
-  and a weakly nonlinear Taylor-Green cross-check.
+  validation of kinetic derivative observability and constructive curvature
+  reconstruction in D2Q9, D3Q15, D3Q19, and D3Q27 lattice Boltzmann models.
+  The repository archives the exact normalized CE2 observability operators
+  for D3Q15, D3Q19, and D3Q27, the lattice-specific Hermite curvature
+  reconstruction operators and their observable functional definitions, and
+  the numerical experiments supporting the associated Physics of Fluids
+  manuscript: finite-wavenumber D2Q9 shear-mode validation,
+  three-dimensional D3Q19/D3Q27 CE2 population-response calculations, a
+  weakly nonlinear Taylor-Green cross-check, and curvature reconstruction
+  from exact linearized and fully evolved BGK shear modes (Experiment IV).
 
 keywords:
   - Lattice Boltzmann Method
@@ -33,7 +40,9 @@ keywords:
   - kinetic populations
   - Chapman-Enskog expansion
   - observability
+  - curvature reconstruction
   - D2Q9
+  - D3Q15
   - D3Q19
   - D3Q27
   - computational fluid dynamics
@@ -48,4 +57,3 @@ preferred-citation:
   journal: "Physics of Fluids"
   status: "submitted"
   year: 2026
-  doi: 10.5281/zenodo.22070832

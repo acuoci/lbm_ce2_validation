@@ -159,3 +159,5 @@ python src/curvature_reconstruction_exact.py      # report; nonzero exit on fail
 python -m unittest discover -s tests              # includes the Step 1 D3Q15 tests
 python scripts/check_repository.py
 ```
+
+The operators are archived as exact CSV files in `operators/reconstruction/` (`D_D3Q*.csv`, `RH_D3Q*.csv`, `observable_functionals.csv`, `sensitivity_factors.csv`; format in `operators/README.md`). `python scripts/generate_reconstruction_operators.py --check` rebuilds them from this module, compares them byte for byte and verifies $R^H_Q\widehat L_Q=D_Q$ from the files alone.

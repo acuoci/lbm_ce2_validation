@@ -1,12 +1,13 @@
 # CE2 population operators
 
-This directory contains the canonical machine-readable CE2 population operators used by both Experiments II and III.
+This directory contains the canonical machine-readable CE2 population operators (used by Experiments II, III and IV) and, in `reconstruction/`, the exact curvature-reconstruction operators derived from them (see the last section).
 
 - `Lhat_D3Q19.csv`: D3Q19 normalized CE2 observability operator.
 - `Lhat_D3Q27.csv`: D3Q27 normalized CE2 observability operator.
 - `Lhat_D3Q15.csv`: D3Q15 normalized CE2 observability operator (input for Experiment IV; see below).
+- `reconstruction/`: observable functionals $D_Q$, Hermite reconstruction operators $R^H_Q$ and sensitivity factors for D3Q15, D3Q19 and D3Q27.
 
-All CSV files include the lattice velocity components, quadrature weights, and the 15 curvature-coordinate columns in the ordering expected by the numerical implementations.
+All `Lhat_D3Q*.csv` files include the lattice velocity components, quadrature weights, and the 15 curvature-coordinate columns in the ordering expected by the numerical implementations.
 
 ## File format (all operators)
 
@@ -90,3 +91,30 @@ python -m unittest discover -s tests                # automated test suite (test
 ```
 
 `--write` writes the file only if every algebraic check passes, and the output is byte-for-byte deterministic. As a supplementary consistency check, the generator applies the same exact construction to the velocity sets of `Lhat_D3Q19.csv` and `Lhat_D3Q27.csv` and confirms that it reproduces both committed operators exactly. Those files are only read, never modified.
+
+## Curvature-reconstruction operators (`reconstruction/`)
+
+Exact operators reconstructing the observable curvature functionals from normalized kinetic populations, $\mathbf d_Q=R^H_Q\widehat{\mathbf g}_Q$ with $\widehat{\mathbf g}_Q=\widehat L_Q\mathbf q$. Derivation and verified results: `docs/experiment_IV_reconstruction_operators.md`.
+
+| File | Format |
+|---|---|
+| `observable_functionals.csv` | header `functional,ux_xy,...,uz_xy`; rows `A_x, A_y, A_z, B_x, B_y, B_z, T, S_1, S_2, S_3`; integer coefficients on the canonical curvature coordinates |
+| `D_D3Q15.csv`, `D_D3Q19.csv`, `D_D3Q27.csv` | $D_Q$; same header; rows in the output order of the lattice: D3Q15 `(S_1,S_2,S_3,T)`, D3Q19 `(A_x,B_x,B_y,A_z,A_y,B_z)`, D3Q27 `(A_x,B_x,B_y,A_z,A_y,B_z,T)` |
+| `RH_D3Q15.csv`, `RH_D3Q19.csv`, `RH_D3Q27.csv` | header `cx,cy,cz,w,<functionals>`; one row per population, in exactly the row order of `Lhat_D3Q*.csv`; column $j$ is row $j$ of $R^H_Q$, i.e. the file stores $(R^H_Q)^T$ |
+| `sensitivity_factors.csv` | `lattice,functional,chi2` with $\chi^2_{Q,j}=\mathbf d_j^TG_Q^+\mathbf d_j$, $G_Q=\widehat L_Q^TW_Q^{-1}\widehat L_Q$ |
+
+All entries are exact integers or fractions. $R^H_Q=K_Q\,\mathcal C_Q$ combines third-order Hermite moments $m_{\alpha\beta\gamma}=\sum_iH^{(3)}_{\alpha\beta\gamma}(\mathbf c_i)\widehat g_i$ (for example $T=\tfrac13m_{xyz}$ on D3Q15, $A_x=\tfrac43m_{xxy}+\tfrac23m_{yzz}$ on D3Q19, $A_x=m_{xxy}$ on D3Q27). It equals the weighted minimum-norm reconstruction $R^\star_Q=D_QG_Q^+\widehat L_Q^TW_Q^{-1}$ exactly, so each row has $\mathbf b^TW\mathbf b=\chi^2$. The defining identity
+
+```text
+R^H_Q Lhat_Q = D_Q,   Q = 15, 19, 27
+```
+
+is verified from the files alone (Python `fractions`, no SymPy) by:
+
+```bash
+python scripts/generate_reconstruction_operators.py --check   # rebuild exactly, compare byte-for-byte, verify identities; never writes
+python scripts/generate_reconstruction_operators.py --write   # regenerate (deterministic), then verify
+python scripts/check_repository.py
+```
+
+The numerical interface `src/curvature_reconstruction.py` builds the same $R^H_Q$ in memory; `tests/test_reconstruction_operator_files.py` checks that it agrees with these files.

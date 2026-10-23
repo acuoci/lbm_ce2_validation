@@ -12,4 +12,4 @@ venv/
 *_output/
 paper_production_output/
 
-# Keep reviewed paper-supporting outputs under reference_results/ and figures/.
+# Keep reviewed paper-supporting outputs under reference_results/ and Figures/.
